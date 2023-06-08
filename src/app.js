@@ -4,6 +4,8 @@ import morgan from 'morgan';
 import session from 'express-session';
 import dotenv from 'dotenv';
 import { sequelize } from './models/index.js';
+import passport from 'passport';
+import authRouter from './routes/auth.js';
 
 dotenv.config();
 
@@ -37,8 +39,11 @@ app.use(
     },
   })
 );
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Routes
+app.use('/auth', authRouter);
 
 app.use((req, res, next) => {
   // 404 NOT FOUND
