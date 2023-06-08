@@ -9,9 +9,6 @@ export const sequelize = new Sequelize(
   DEVELOPMENT.username,
   DEVELOPMENT.password,
   {
-    database: DEVELOPMENT.database,
-    username: DEVELOPMENT.username,
-    password: DEVELOPMENT.password,
     host: DEVELOPMENT.host,
     dialect: DEVELOPMENT.dialect,
   }
