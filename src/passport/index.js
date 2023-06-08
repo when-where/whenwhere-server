@@ -1,5 +1,6 @@
 import passport from 'passport';
 import local from './localStrategy.js';
+import kakao from './kakaoStrategy.js';
 import User from '../models/User.js';
 
 export default () => {
@@ -14,4 +15,5 @@ export default () => {
   });
 
   local();
+  kakao();
 };
