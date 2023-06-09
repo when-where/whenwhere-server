@@ -44,7 +44,9 @@ export const signIn = (req, res, next) => {
         console.error(loginError);
         return next(loginError);
       }
-      return res.status(200).json({ success: true, data: {}, error: null });
+      return res
+        .status(200)
+        .json({ success: true, data: { email: user.email, nickname: user.nickname }, error: null });
     });
   })(req, res, next);
 };
