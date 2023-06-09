@@ -6,6 +6,8 @@ import dotenv from 'dotenv';
 import { sequelize } from './models/index.js';
 import passport from 'passport';
 import authRouter from './routes/auth.js';
+import testRouter from './routes/testRoute.js';
+import passportConfig from './passport/index.js';
 
 dotenv.config();
 
@@ -41,9 +43,19 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+passportConfig();
+
+app.get('/', (req, res) => {
+  res.send(`
+    <h1>Hello World!</h1>
+    <a href="/auth/kakao">카카오로 로그인</a>
+    <a href="/test">테스트 페이지</a>
+  `);
+});
 
 // Routes
 app.use('/auth', authRouter);
+app.use('/', testRouter);
 
 app.use((req, res, next) => {
   // 404 NOT FOUND
