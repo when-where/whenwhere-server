@@ -1,7 +1,7 @@
 import express from 'express';
 import passport from 'passport';
-import { signIn, signUp } from '../controllers/auth.js';
-import { isNotLoggedIn } from '../middlewares/index.js';
+import { signIn, signUp, logout } from '../controllers/auth.js';
+import { isLoggedIn, isNotLoggedIn } from '../middlewares/index.js';
 const router = express.Router();
 
 router.post('/signup', isNotLoggedIn, signUp);
@@ -19,11 +19,6 @@ router.get(
   }
 );
 
-router.get('/logout', (req, res) => {
-  req.logout(function () {
-    res.clearCookie('connect.sid');
-    res.redirect('/');
-  });
-});
+router.post('/logout', isLoggedIn, logout);
 
 export default router;

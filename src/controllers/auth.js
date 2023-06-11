@@ -50,3 +50,14 @@ export const signIn = (req, res, next) => {
     });
   })(req, res, next);
 };
+
+export const logout = (req, res, next) => {
+  req.logout(function (error) {
+    if (error) {
+      return next(error);
+    }
+    req.session.destroy();
+    res.clearCookie('connect.sid');
+    res.send('ok');
+  });
+};
