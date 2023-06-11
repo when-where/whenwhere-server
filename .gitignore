@@ -80,5 +80,6 @@ $RECYCLE.BIN/
 *.lnk
 
 .eslintcache
+dump.rdb
 
 # End of https://www.toptal.com/developers/gitignore/api/dotenv,windows,macos,react
