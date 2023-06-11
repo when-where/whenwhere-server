@@ -13,13 +13,13 @@ import RedisStore from 'connect-redis';
 
 dotenv.config();
 
-let redisClient = redis.createClient({
+const redisClient = redis.createClient({
   url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
   password: process.env.REDIS_PASSWORD,
 });
 redisClient.connect().catch(console.error);
 
-let redisStore = new RedisStore({
+const redisStore = new RedisStore({
   client: redisClient,
   prefix: 'session:',
 });
