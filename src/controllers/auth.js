@@ -1,5 +1,6 @@
 import User from '../models/User.js';
 import bcrypt from 'bcrypt';
+import passport from 'passport';
 
 const SALT_ROUNDS = 12;
 
@@ -27,4 +28,36 @@ export const signUp = async (req, res, next) => {
     console.error(error);
     next(error);
   }
+};
+
+export const signIn = (req, res, next) => {
+  passport.authenticate('local', (authError, user, info) => {
+    if (authError) {
+      console.error(authError);
+      return next(authError);
+    }
+    if (!user) {
+      return res.status(401).json({ success: false, data: null, error: info });
+    }
+    return req.login(user, (loginError) => {
+      if (loginError) {
+        console.error(loginError);
+        return next(loginError);
+      }
+      return res
+        .status(200)
+        .json({ success: true, data: { email: user.email, nickname: user.nickname }, error: null });
+    });
+  })(req, res, next);
+};
+
+export const logout = (req, res, next) => {
+  req.logout(function (error) {
+    if (error) {
+      return next(error);
+    }
+    req.session.destroy();
+    res.clearCookie('connect.sid');
+    res.send('ok');
+  });
 };

@@ -12,6 +12,7 @@ router.get('/test', (req, res) => {
         : '<a href="/auth/logout">카카오 로그아웃</a>'
     }
     <a href="/">홈 으로가기</a>
+    <form action="/auth/logout" method="post"><button>로그아웃</button></form>
   `);
 });
 
