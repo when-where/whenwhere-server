@@ -1,6 +1,7 @@
 import User from '../models/User.js';
 import bcrypt from 'bcrypt';
 import passport from 'passport';
+import jwt from 'jsonwebtoken';
 
 const SALT_ROUNDS = 12;
 
@@ -15,12 +16,15 @@ export const signUp = async (req, res, next) => {
         error: { code: 'DUPLICATED_EMAIL', message: '이미 존재하는 이메일입니다.' },
       });
     }
+
+    const token = jwt.sign({ email }, process.env.JWT_SECRET);
     const hash = await bcrypt.hash(password, SALT_ROUNDS);
     await User.create({
       email,
       nickname,
       password: hash,
       is_valid: false,
+      confirmation_code: token,
     });
     return res
       .status(201)

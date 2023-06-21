@@ -19,7 +19,7 @@ class User extends Sequelize.Model {
           allowNull: false,
         },
         confirmation_code: {
-          type: Sequelize.STRING(100),
+          type: Sequelize.STRING(200),
           allowNull: true,
           unique: true,
         },
