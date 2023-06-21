@@ -25,6 +25,7 @@ export default () => {
               nickname: profile.displayName,
               social_id: profile.id,
               provider: 'kakao',
+              is_valid: true,
             });
             done(null, newUser);
           }

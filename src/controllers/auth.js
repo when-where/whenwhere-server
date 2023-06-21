@@ -20,6 +20,7 @@ export const signUp = async (req, res, next) => {
       email,
       nickname,
       password: hash,
+      is_valid: false,
     });
     return res
       .status(201)
@@ -38,6 +39,16 @@ export const signIn = (req, res, next) => {
     }
     if (!user) {
       return res.status(401).json({ success: false, data: null, error: info });
+    }
+    if (!user.is_valid) {
+      return res.status(401).json({
+        success: false,
+        data: null,
+        error: {
+          code: 'LOGIN_FAILURE',
+          message: '인증되지 않은 이메일입니다. 이메일 인증을 해주세요.',
+        },
+      });
     }
     return req.login(user, (loginError) => {
       if (loginError) {
