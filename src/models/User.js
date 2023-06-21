@@ -18,6 +18,10 @@ class User extends Sequelize.Model {
           type: Sequelize.STRING(20),
           allowNull: false,
         },
+        description: {
+          type: Sequelize.STRING(200),
+          allowNull: true,
+        },
         password: {
           type: Sequelize.STRING(100),
           allowNull: true,
@@ -31,16 +35,8 @@ class User extends Sequelize.Model {
           type: Sequelize.STRING(255),
           allowNull: true,
         },
-        access_token: {
-          type: Sequelize.TEXT,
-          allowNull: true,
-        },
-        refresh_token: {
-          type: Sequelize.TEXT,
-          allowNull: true,
-        },
-        profile_image: {
-          type: Sequelize.BLOB('medium'),
+        profile_color: {
+          type: Sequelize.STRING(7),
           allowNull: true,
         },
       },
