@@ -10,6 +10,7 @@ import testRouter from './routes/testRoute.js';
 import passportConfig from './passport/index.js';
 import redis from 'redis';
 import RedisStore from 'connect-redis';
+import { job } from './utils/schedule.js';
 
 dotenv.config();
 
