@@ -2,6 +2,7 @@ import User from '../models/User.js';
 import bcrypt from 'bcrypt';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
+import { stmpTransport } from '../config/email.js';
 
 const SALT_ROUNDS = 12;
 
@@ -19,6 +20,7 @@ export const signUp = async (req, res, next) => {
 
     const token = jwt.sign({ email }, process.env.JWT_SECRET);
     const hash = await bcrypt.hash(password, SALT_ROUNDS);
+
     await User.create({
       email,
       nickname,
@@ -26,9 +28,13 @@ export const signUp = async (req, res, next) => {
       is_valid: false,
       confirmation_code: token,
     });
-    return res
+
+    res
       .status(201)
-      .json({ success: true, data: { message: '회원가입이 완료되었습니다.' }, error: null });
+      .send({ success: true, data: { message: '회원가입이 완료되었습니다.' }, error: null });
+
+    sendConfirmationEmail(email, res, token);
+    return;
   } catch (error) {
     console.error(error);
     next(error);
@@ -75,4 +81,67 @@ export const logout = (req, res, next) => {
     res.clearCookie('connect.sid');
     res.send('ok');
   });
+};
+
+export const sendConfirmationEmail = (email, res, confirmationCode) => {
+  stmpTransport.sendMail(
+    {
+      from: 'whenwhere',
+      to: email,
+      subject: '[언제어디] 회원가입 인증 메일',
+      html: `<p>아래 링크를 클릭하고 회원가입 절차를 마무리해주세요.</p>
+    <a href=http://localhost:8001/auth/confirm/${confirmationCode}>여기를 클릭해주세요.</a>`,
+    },
+    (error, response) => {
+      if (error) {
+        console.error(error);
+        res.status(500).json({
+          success: false,
+          data: null,
+          error: { code: 'SEND_MAIL_FAILURE', message: '메일 전송에 실패했습니다.' },
+        });
+      } else {
+        res.status(200).json({
+          success: true,
+          data: { message: '메일 전송에 성공했습니다.' },
+          error: null,
+        });
+      }
+      stmpTransport.close();
+      return;
+    }
+  );
+};
+
+export const verifyUser = (req, res, next) => {
+  User.findOne({
+    where: {
+      confirmation_code: req.params.confirmationCode,
+    },
+  })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).send({
+          success: false,
+          data: null,
+          error: { code: 'VERIFY_FAILURE', message: '사용자를 찾지 못했습니다.' },
+        });
+      }
+
+      user.is_valid = true;
+      user.save((err) => {
+        if (err) {
+          return res.status(500).send({
+            success: false,
+            data: null,
+            error: { code: 'SERVER_FAILURE', message: '서버 에러가 발생했습니다.' },
+          });
+        }
+      });
+      res.send('이메일 인증이 완료되었습니다.');
+    })
+    .catch((error) => {
+      console.error(error);
+      next(error);
+    });
 };
