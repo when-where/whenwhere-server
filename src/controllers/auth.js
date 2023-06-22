@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import { stmpTransport } from '../config/email.js';
 
 const SALT_ROUNDS = 12;
+const JWT_EXPIRE = '1d';
 
 export const signUp = async (req, res, next) => {
   const { nickname, email, password } = req.body;
@@ -18,7 +19,7 @@ export const signUp = async (req, res, next) => {
       });
     }
 
-    const token = jwt.sign({ email }, process.env.JWT_SECRET);
+    const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: JWT_EXPIRE });
     const hash = await bcrypt.hash(password, SALT_ROUNDS);
 
     await User.create({
@@ -113,35 +114,46 @@ export const sendConfirmationEmail = (email, res, confirmationCode) => {
   );
 };
 
-export const verifyUser = (req, res, next) => {
-  User.findOne({
-    where: {
-      confirmation_code: req.params.confirmationCode,
-    },
-  })
-    .then((user) => {
-      if (!user) {
+export const verifyUser = async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      where: {
+        confirmation_code: req.params.confirmationCode,
+      },
+    });
+
+    if (!user) {
+      return res.status(404).send({
+        success: false,
+        data: null,
+        error: { code: 'VERIFY_FAILURE', message: '사용자를 찾지 못했습니다.' },
+      });
+    }
+
+    jwt.verify(req.params.confirmationCode, process.env.JWT_SECRET, (error) => {
+      if (error) {
         return res.status(404).send({
           success: false,
           data: null,
-          error: { code: 'VERIFY_FAILURE', message: '사용자를 찾지 못했습니다.' },
+          error: { code: 'VERIFY_FAILURE', message: '토큰이 만료되었습니다.' },
         });
+      } else {
+        user.is_valid = true;
+        user.save((err) => {
+          if (err) {
+            return res.status(500).send({
+              success: false,
+              data: null,
+              error: { code: 'SERVER_FAILURE', message: '서버 에러가 발생했습니다.' },
+            });
+          }
+          return null;
+        });
+        return res.send('이메일 인증이 완료되었습니다.');
       }
-
-      user.is_valid = true;
-      user.save((err) => {
-        if (err) {
-          return res.status(500).send({
-            success: false,
-            data: null,
-            error: { code: 'SERVER_FAILURE', message: '서버 에러가 발생했습니다.' },
-          });
-        }
-      });
-      res.send('이메일 인증이 완료되었습니다.');
-    })
-    .catch((error) => {
-      console.error(error);
-      next(error);
     });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
 };
