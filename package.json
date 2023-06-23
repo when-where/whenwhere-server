@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon --watch src/ src/app.js",
-    "postinstall": "husky install",
+    "postinstall": "node -e \"if (process.env.NODE_ENV !== 'production'){process.exit(1)} \" || husky install",
     "format": "prettier --cache --write .",
     "lint": "eslint --cache ."
   },
