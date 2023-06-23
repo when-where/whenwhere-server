@@ -11,6 +11,10 @@ export const sequelize = new Sequelize(
   {
     host: DEVELOPMENT.host,
     dialect: DEVELOPMENT.dialect,
+    timezone: '+09:00', // DB에 저장할 때 시간 설정
+    dialectOptions: {
+      timezone: '+09:00', // DB에서 가져올 때 시간 설정
+    },
   }
 );
 
