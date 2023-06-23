@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import { signIn, signUp, logout } from '../controllers/auth.js';
+import { signIn, signUp, logout, verifyUser } from '../controllers/auth.js';
 import { isLoggedIn, isNotLoggedIn } from '../middlewares/index.js';
 const router = express.Router();
 
@@ -20,5 +20,7 @@ router.get(
 );
 
 router.post('/logout', isLoggedIn, logout);
+
+router.get('/confirm/:confirmationCode', verifyUser);
 
 export default router;

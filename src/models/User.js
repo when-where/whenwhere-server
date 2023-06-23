@@ -14,6 +14,15 @@ class User extends Sequelize.Model {
           allowNull: true,
           unique: true,
         },
+        is_valid: {
+          type: Sequelize.BOOLEAN,
+          allowNull: false,
+        },
+        confirmation_code: {
+          type: Sequelize.STRING(200),
+          allowNull: true,
+          unique: true,
+        },
         nickname: {
           type: Sequelize.STRING(20),
           allowNull: false,
