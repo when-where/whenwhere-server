@@ -25,7 +25,7 @@ class User extends Sequelize.Model {
         },
         nickname: {
           type: Sequelize.STRING(20),
-          allowNull: false,
+          allowNull: true,
         },
         description: {
           type: Sequelize.STRING(200),
