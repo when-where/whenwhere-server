@@ -157,3 +157,36 @@ export const verifyUser = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getUserStatus = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ where: { email: req.query.email } });
+
+    if (!user) {
+      return res.status(404).send({
+        success: false,
+        data: null,
+        error: { code: 'VERIFY_FAILURE', message: '사용자를 찾지 못했습니다.' },
+      });
+    }
+
+    if (!user.is_valid) {
+      return res.status(403).send({
+        success: false,
+        data: null,
+        error: { code: 'VERIFY_NOT_COMPLETED', message: '인증이 완료되지 않았습니다.' },
+      });
+    }
+
+    return res.status(200).send({
+      success: true,
+      data: {
+        status: true,
+      },
+      error: null,
+    });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
