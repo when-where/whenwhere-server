@@ -8,5 +8,3 @@ assignees: ''
 ---
 
 # Description
-
-# Issue number
