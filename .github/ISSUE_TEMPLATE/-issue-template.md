@@ -10,5 +10,3 @@ assignees: ''
 # Description
 
 # Issue number
-
-# Figma number
