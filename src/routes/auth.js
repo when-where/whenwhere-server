@@ -1,11 +1,11 @@
 import express from 'express';
 import passport from 'passport';
-import { signIn, signUp, logout, verifyUser, getUserStatus } from '../controllers/auth.js';
-import { isLoggedIn, isNotLoggedIn } from '../middlewares/index.js';
+import { signIn, signUp, signout, verifyUser, getUserStatus } from '../controllers/auth.js';
+import { isSignedIn, isNotSignedIn } from '../middlewares/index.js';
 const router = express.Router();
 
-router.post('/signup', isNotLoggedIn, signUp);
-router.post('/signin', isNotLoggedIn, signIn);
+router.post('/signup', isNotSignedIn, signUp);
+router.post('/signin', isNotSignedIn, signIn);
 
 router.get('/kakao', passport.authenticate('kakao'));
 
@@ -19,7 +19,7 @@ router.get(
   }
 );
 
-router.post('/logout', isLoggedIn, logout);
+router.post('/signout', isSignedIn, signout);
 
 router.get('/confirm/:confirmationCode', verifyUser);
 router.get('/status', getUserStatus);
