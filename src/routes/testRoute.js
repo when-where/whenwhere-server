@@ -9,10 +9,10 @@ router.get('/test', (req, res) => {
     ${
       req.user?.nickname === undefined
         ? '<p>로그아웃 상태입니다.</p>'
-        : '<a href="/auth/logout">카카오 로그아웃</a>'
+        : '<a href="/auth/signout">카카오 로그아웃</a>'
     }
     <a href="/">홈 으로가기</a>
-    <form action="/auth/logout" method="post"><button>로그아웃</button></form>
+    <form action="/auth/signout" method="post"><button>로그아웃</button></form>
   `);
 });
 
