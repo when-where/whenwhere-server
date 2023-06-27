@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import { signIn, signUp, signout, verifyUser, getUserStatus } from '../controllers/auth.js';
+import { signIn, signUp, signOut, verifyUser, getUserStatus } from '../controllers/auth.js';
 import { isSignedIn, isNotSignedIn } from '../middlewares/index.js';
 const router = express.Router();
 
@@ -19,7 +19,7 @@ router.get(
   }
 );
 
-router.post('/signout', isSignedIn, signout);
+router.post('/signout', isSignedIn, signOut);
 
 router.get('/confirm/:confirmationCode', verifyUser);
 router.get('/status', getUserStatus);

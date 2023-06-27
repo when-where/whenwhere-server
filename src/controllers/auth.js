@@ -73,8 +73,8 @@ export const signIn = (req, res, next) => {
   })(req, res, next);
 };
 
-export const signout = (req, res, next) => {
-  req.signout(function (error) {
+export const signOut = (req, res, next) => {
+  req.logout(function (error) {
     if (error) {
       return next(error);
     }
