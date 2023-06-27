@@ -56,7 +56,7 @@ export const signIn = (req, res, next) => {
         success: false,
         data: null,
         error: {
-          code: 'LOGIN_FAILURE',
+          code: 'VERIFY_FAILURE',
           message: '인증되지 않은 이메일입니다. 이메일 인증을 해주세요.',
         },
       });
