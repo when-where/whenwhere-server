@@ -73,6 +73,14 @@ export const signIn = (req, res, next) => {
   })(req, res, next);
 };
 
+export const kakaoSignIn = (req, res) => {
+  return res.status(200).json({
+    success: true,
+    data: { social_id: req.user.social_id, nickname: req.user.nickname },
+    error: null,
+  });
+};
+
 export const signOut = (req, res, next) => {
   req.logout(function (error) {
     if (error) {
