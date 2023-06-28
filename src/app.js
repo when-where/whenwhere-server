@@ -18,7 +18,9 @@ const redisClient = redis.createClient({
   url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
   password: process.env.REDIS_PASSWORD,
 });
-redisClient.connect().catch(console.error);
+
+await redisClient.connect();
+await redisClient.ping().catch(console.error);
 
 const redisStore = new RedisStore({
   client: redisClient,

@@ -1,6 +1,13 @@
 import express from 'express';
 import passport from 'passport';
-import { signIn, signUp, signOut, verifyUser, getUserStatus } from '../controllers/auth.js';
+import {
+  signIn,
+  signUp,
+  signOut,
+  verifyUser,
+  getUserStatus,
+  kakaoSignIn,
+} from '../controllers/auth.js';
 import { isSignedIn, isNotSignedIn } from '../middlewares/index.js';
 const router = express.Router();
 
@@ -12,10 +19,10 @@ router.get('/kakao', passport.authenticate('kakao'));
 router.get(
   '/kakao/callback',
   passport.authenticate('kakao', {
-    failureRedirect: '/',
+    failureRedirect: '/kakao',
   }),
   (req, res) => {
-    res.redirect('/test');
+    kakaoSignIn(req, res);
   }
 );
 
