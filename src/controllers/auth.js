@@ -51,24 +51,17 @@ export const signIn = (req, res, next) => {
     if (!user) {
       return res.status(401).json({ success: false, data: null, error: info });
     }
-    if (!user.is_valid) {
-      return res.status(401).json({
-        success: false,
-        data: null,
-        error: {
-          code: 'VERIFY_FAILURE',
-          message: '인증되지 않은 이메일입니다. 이메일 인증을 해주세요.',
-        },
-      });
-    }
+
     return req.login(user, (loginError) => {
       if (loginError) {
         console.error(loginError);
         return next(loginError);
       }
-      return res
-        .status(200)
-        .json({ success: true, data: { email: user.email, nickname: user.nickname }, error: null });
+      return res.status(200).json({
+        success: true,
+        data: { email: user.email, nickname: user.nickname, is_valid: user.is_valid },
+        error: null,
+      });
     });
   })(req, res, next);
 };
