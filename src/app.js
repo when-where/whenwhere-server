@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import { sequelize } from './models/index.js';
 import passport from 'passport';
 import authRouter from './routes/auth.js';
+import userRouter from './routes/user.js';
 import testRouter from './routes/testRoute.js';
 import passportConfig from './passport/index.js';
 import redis from 'redis';
@@ -98,6 +99,7 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use('/auth', authRouter);
+app.use('/user', userRouter);
 app.use('/', testRouter);
 
 app.use((req, res, next) => {
