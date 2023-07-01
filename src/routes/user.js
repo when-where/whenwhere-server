@@ -4,6 +4,6 @@ import { updateProfile } from '../controllers/user.js';
 
 const router = express.Router();
 
-router.put('/profile', isSignedIn, updateProfile);
+router.patch('/profile', isSignedIn, updateProfile);
 
 export default router;
