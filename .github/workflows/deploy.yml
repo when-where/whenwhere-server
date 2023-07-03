@@ -1,0 +1,66 @@
+name: Deploy to cloudtype
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Connect deploy key
+        uses: cloudtype-github-actions/connect@v1
+        with:
+          token: ${{ secrets.CLOUDTYPE_TOKEN }}
+          ghtoken: ${{ secrets.GHP_TOKEN }}
+      - name: Deploy
+        uses: cloudtype-github-actions/deploy@v1
+        with:
+          token: ${{ secrets.CLOUDTYPE_TOKEN }}
+          project: senasoon0/whenwhere
+          stage: main
+          yaml: |
+            name: longtimenosee-server
+            app: node@16
+            options:
+              env:
+                - name: NODE_ENV
+                  value: production
+                - name: SEQUELIZE_DIALECT
+                  secret: SEQUELIZE_DIALECT
+                - name: SEQUELIZE_HOST
+                  secret: SEQUELIZE_HOST
+                - name: SEQUELIZE_USERNAME
+                  secret: SEQUELIZE_USERNAME
+                - name: SEQUELIZE_DATABASE
+                  secret: SEQUELIZE_DATABASE
+                - name: SEQUELIZE_PASSWORD
+                  secret: SEQUELIZE_PASSWORD
+                - name: PORT
+                  secret: PORT
+                - name: COOKIE_SECRET
+                  secret: COOKIE_SECRET
+                - name: KAKAO_ID
+                  secret: KAKAO_ID
+                - name: REDIS_PASSWORD
+                  secret: REDIS_PASSWORD
+                - name: REDIS_HOST
+                  secret: REDIS_HOST
+                - name: REDIS_PORT
+                  secret: REDIS_PORT
+                - name: JWT_SECRET
+                  secret: JWT_SECRET
+                - name: SMTP_SERVICE
+                  secret: SMTP_SERVICE
+                - name: SMTP_USER
+                  secret: SMTP_USER
+                - name: SMTP_PASSWORD
+                  secret: SMTP_PASSWORD
+              ports: "8001"
+              install: npm install
+              start: npm start
+            context:
+              git:
+                url: git@github.com:${{ github.repository }}.git
+                ref: ${{ github.ref }}
