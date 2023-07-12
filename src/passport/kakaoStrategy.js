@@ -22,10 +22,10 @@ export default () => {
             done(null, exUser);
           } else {
             const newUser = await User.create({
-              nickname: profile.displayName,
               social_id: profile.id,
               provider: 'kakao',
               is_valid: true,
+              is_profile: false,
             });
             done(null, newUser);
           }

@@ -27,6 +27,7 @@ export const signUp = async (req, res, next) => {
       nickname,
       password: hash,
       is_valid: false,
+      is_profile: false,
       confirmation_code: token,
     });
 
@@ -59,7 +60,12 @@ export const signIn = (req, res, next) => {
       }
       return res.status(200).json({
         success: true,
-        data: { email: user.email, nickname: user.nickname, is_valid: user.is_valid },
+        data: {
+          email: user.email,
+          nickname: user.nickname,
+          is_valid: user.is_valid,
+          is_profile: user.is_profile,
+        },
         error: null,
       });
     });
@@ -67,11 +73,25 @@ export const signIn = (req, res, next) => {
 };
 
 export const kakaoSignIn = (req, res) => {
-  return res.status(200).json({
-    success: true,
-    data: { social_id: req.user.social_id, nickname: req.user.nickname },
-    error: null,
-  });
+  const user = req.user;
+  if (user) {
+    return res.status(200).json({
+      success: true,
+      data: {
+        social_id: user.social_id,
+        nickname: user.nickname,
+        is_valid: user.is_valid,
+        is_profile: user.is_profile,
+      },
+      error: null,
+    });
+  } else {
+    return res.status(500).json({
+      success: false,
+      data: null,
+      error: '카카오 로그인에 실패했습니다.',
+    });
+  }
 };
 
 export const signOut = (req, res, next) => {
