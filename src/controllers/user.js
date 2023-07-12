@@ -20,6 +20,7 @@ export const updateProfile = async (req, res, next) => {
     user.nickname = req.body.nickname;
     user.description = req.body.description;
     user.profile_color = req.body.profile_color;
+    user.is_profile = req.body.is_profile;
     user.save();
 
     return res.status(200).json({
@@ -28,6 +29,7 @@ export const updateProfile = async (req, res, next) => {
         nickname: user.nickname,
         description: user.description,
         profile_color: user.profile_color,
+        is_profile: user.is_profile,
       },
       error: null,
     });
