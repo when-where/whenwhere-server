@@ -43,6 +43,7 @@ export const createPlan = async (req, res, next) => {
           include: [
             { model: User, attributes: ['id', 'nickname', 'profile_color', 'description'] },
           ],
+          attributes: ['plan_member_id'],
         },
         {
           model: PlanDateRange,
