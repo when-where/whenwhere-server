@@ -5,13 +5,19 @@ class PlanDateRange extends Sequelize.Model {
   static initiate(sequelize) {
     PlanDateRange.init(
       {
-        id: {
+        plan_date_id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
           autoIncrement: true,
+          allowNull: false,
         },
         date: {
           type: Sequelize.DATEONLY(),
+          allowNull: false,
+        },
+        plan_id: {
+          type: Sequelize.INTEGER,
+          primaryKey: true,
           allowNull: false,
         },
       },
@@ -29,7 +35,7 @@ class PlanDateRange extends Sequelize.Model {
   }
 
   static associate() {
-    PlanDateRange.belongsTo(Plan);
+    PlanDateRange.belongsTo(Plan, { targetKey: 'plan_id', foreignKey: 'plan_id' });
   }
 }
 

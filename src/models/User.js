@@ -10,6 +10,7 @@ class User extends Sequelize.Model {
           type: Sequelize.INTEGER,
           primaryKey: true,
           autoIncrement: true,
+          allowNull: false,
         },
         email: {
           type: Sequelize.STRING(40),
@@ -69,8 +70,8 @@ class User extends Sequelize.Model {
   }
 
   static associate() {
-    User.hasMany(Plan);
-    User.hasMany(PlanMember);
+    User.hasMany(Plan, { sourceKey: 'id', foreignKey: 'user_id' });
+    User.hasMany(PlanMember, { sourceKey: 'id', foreignKey: 'user_id' });
   }
 }
 

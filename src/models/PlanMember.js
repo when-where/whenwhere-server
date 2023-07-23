@@ -6,10 +6,21 @@ class PlanMember extends Sequelize.Model {
   static initiate(sequelize) {
     PlanMember.init(
       {
-        id: {
+        plan_member_id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
           autoIncrement: true,
+          allowNull: false,
+        },
+        user_id: {
+          type: Sequelize.INTEGER,
+          primaryKey: true,
+          allowNull: false,
+        },
+        plan_id: {
+          type: Sequelize.INTEGER,
+          primaryKey: true,
+          allowNull: false,
         },
       },
       {
@@ -26,8 +37,8 @@ class PlanMember extends Sequelize.Model {
   }
 
   static associate() {
-    PlanMember.belongsTo(User);
-    PlanMember.belongsTo(Plan);
+    PlanMember.belongsTo(User, { targetKey: 'id', foreignKey: 'user_id' });
+    PlanMember.belongsTo(Plan, { targetKey: 'plan_id', foreignKey: 'plan_id' });
   }
 }
 

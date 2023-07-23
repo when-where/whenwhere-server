@@ -7,10 +7,16 @@ class Plan extends Sequelize.Model {
   static initiate(sequelize) {
     Plan.init(
       {
-        id: {
+        plan_id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
           autoIncrement: true,
+          allowNull: false,
+        },
+        user_id: {
+          type: Sequelize.INTEGER,
+          primaryKey: true,
+          allowNull: false,
         },
         plan_title: {
           type: Sequelize.STRING(40),
@@ -72,9 +78,9 @@ class Plan extends Sequelize.Model {
   }
 
   static associate() {
-    Plan.belongsTo(User);
-    Plan.hasMany(PlanMember);
-    Plan.hasMany(PlanDateRange);
+    Plan.belongsTo(User, { targetKey: 'id', foreignKey: 'user_id' });
+    Plan.hasMany(PlanMember, { sourceKey: 'plan_id', foreignKey: 'plan_id' });
+    Plan.hasMany(PlanDateRange, { sourceKey: 'plan_id', foreignKey: 'plan_id' });
   }
 }
 
