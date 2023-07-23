@@ -1,4 +1,6 @@
 import Sequelize from 'sequelize';
+import Plan from './Plan.js';
+import PlanMember from './PlanMember.js';
 
 class User extends Sequelize.Model {
   static initiate(sequelize) {
@@ -56,7 +58,7 @@ class User extends Sequelize.Model {
       {
         sequelize,
         timestamps: true,
-        underscored: false,
+        underscored: true,
         modelName: 'User',
         tableName: 'user',
         paranoid: false,
@@ -66,7 +68,10 @@ class User extends Sequelize.Model {
     );
   }
 
-  static associate(db) {}
+  static associate() {
+    User.hasMany(Plan);
+    User.hasMany(PlanMember);
+  }
 }
 
 export default User;
