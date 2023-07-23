@@ -25,7 +25,7 @@ class PlanDateRange extends Sequelize.Model {
         sequelize,
         timestamps: true,
         underscored: true,
-        modelName: 'PlanDateRange',
+        modelName: 'plan_date_range',
         tableName: 'plan_date_range',
         paranoid: false,
         charset: 'utf8',

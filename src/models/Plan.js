@@ -68,7 +68,7 @@ class Plan extends Sequelize.Model {
         sequelize,
         timestamps: true,
         underscored: true,
-        modelName: 'Plan',
+        modelName: 'plan',
         tableName: 'plan',
         paranoid: false,
         charset: 'utf8',

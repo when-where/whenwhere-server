@@ -27,7 +27,7 @@ class PlanMember extends Sequelize.Model {
         sequelize,
         timestamps: true,
         underscored: true,
-        modelName: 'PlanMember',
+        modelName: 'plan_member',
         tableName: 'plan_member',
         paranoid: false,
         charset: 'utf8',
