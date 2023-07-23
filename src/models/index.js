@@ -18,6 +18,14 @@ export const sequelize = new Sequelize(
     dialectOptions: {
       timezone: '+09:00', // DB에서 가져올 때 시간 설정
     },
+    define: {
+      timestamps: true,
+      undersocred: true,
+      underscoredAll: true,
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+      deletedAt: 'deleted_at',
+    },
   }
 );
 
