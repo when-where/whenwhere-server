@@ -1,6 +1,9 @@
 import Sequelize from 'sequelize';
 import DEVELOPMENT from '../config/config.js';
 import User from './User.js';
+import Plan from './Plan.js';
+import PlanMember from './PlanMember.js';
+import PlanDateRange from './PlanDateRange.js';
 
 const db = {};
 
@@ -15,13 +18,27 @@ export const sequelize = new Sequelize(
     dialectOptions: {
       timezone: '+09:00', // DB에서 가져올 때 시간 설정
     },
+    define: {
+      timestamps: true,
+      undersocred: true,
+      underscoredAll: true,
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+      deletedAt: 'deleted_at',
+    },
   }
 );
 
 db.sequelize = sequelize;
 
 User.initiate(sequelize);
+Plan.initiate(sequelize);
+PlanMember.initiate(sequelize);
+PlanDateRange.initiate(sequelize);
 
-User.associate(db);
+User.associate();
+Plan.associate();
+PlanMember.associate();
+PlanDateRange.associate();
 
 export default db;

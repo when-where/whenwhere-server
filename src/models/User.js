@@ -1,4 +1,6 @@
 import Sequelize from 'sequelize';
+import Plan from './Plan.js';
+import PlanMember from './PlanMember.js';
 
 class User extends Sequelize.Model {
   static initiate(sequelize) {
@@ -8,6 +10,7 @@ class User extends Sequelize.Model {
           type: Sequelize.INTEGER,
           primaryKey: true,
           autoIncrement: true,
+          allowNull: false,
         },
         email: {
           type: Sequelize.STRING(40),
@@ -56,8 +59,8 @@ class User extends Sequelize.Model {
       {
         sequelize,
         timestamps: true,
-        underscored: false,
-        modelName: 'User',
+        underscored: true,
+        modelName: 'user',
         tableName: 'user',
         paranoid: false,
         charset: 'utf8',
@@ -66,7 +69,10 @@ class User extends Sequelize.Model {
     );
   }
 
-  static associate(db) {}
+  static associate() {
+    User.hasMany(Plan, { sourceKey: 'id', foreignKey: 'user_id' });
+    User.hasMany(PlanMember, { sourceKey: 'id', foreignKey: 'user_id' });
+  }
 }
 
 export default User;
